@@ -22,8 +22,12 @@
 
 ```env
 TG_TOKEN=你的 Telegram Bot Token
+
+# 可选：仅 /aiprompt 和图片面板里的“AI 随机风格”需要
 DS_API_KEY=你的 DeepSeek API Key
 ```
+
+`TG_TOKEN` 是必填项。`DS_API_KEY` 不是必填项；不填写时，AI 随机风格功能不可用，其他电商工作流不受影响。
 
 `.env`、`.用户数据/`、日志、用户语音和旧版 `后台处理/bot_secrets.py` 都会被 Git 忽略。
 

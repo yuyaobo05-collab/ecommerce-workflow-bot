@@ -12,7 +12,7 @@ mkdir -p "$LOG_DIR"
 
 if [ ! -f "$SCRIPT_DIR/.env" ] && [ ! -f "$SCRIPT_DIR/后台处理/bot_secrets.py" ]; then
     echo "⚠️ 还没有配置 Bot Token。"
-    echo "请先双击「配置.command」，按提示填写 Telegram Bot Token 和 DeepSeek API Key。"
+    echo "请先双击「配置.command」，按提示填写 Telegram Bot Token。DeepSeek API Key 为可选项。"
     exit 1
 fi
 

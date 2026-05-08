@@ -15,7 +15,7 @@ function Ensure-Config {
     $legacySecrets = Join-Path $ProjectDir "后台处理\bot_secrets.py"
     if (-not (Test-Path $envFile) -and -not (Test-Path $legacySecrets)) {
         Write-Host "还没有配置 Bot Token。"
-        Write-Host "请先双击 Win11\配置.bat，按提示填写 Telegram Bot Token 和 DeepSeek API Key。"
+        Write-Host "请先双击 Win11\配置.bat，按提示填写 Telegram Bot Token。DeepSeek API Key 为可选项。"
         exit 1
     }
 }

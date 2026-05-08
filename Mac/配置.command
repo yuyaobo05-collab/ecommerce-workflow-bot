@@ -18,11 +18,7 @@ if [ -z "$TG_TOKEN" ]; then
     exit 1
 fi
 
-read -r -p "请输入 DeepSeek API Key：" DS_API_KEY
-if [ -z "$DS_API_KEY" ]; then
-    echo "❌ DeepSeek API Key 不能为空。"
-    exit 1
-fi
+read -r -p "请输入 DeepSeek API Key（可选，仅 AI 随机风格需要，直接回车可跳过）：" DS_API_KEY
 
 umask 077
 cat > "$ENV_FILE" <<EOF
@@ -36,4 +32,7 @@ chmod 600 "$ENV_FILE"
 
 echo ""
 echo "✅ 已写入：$ENV_FILE"
+if [ -z "$DS_API_KEY" ]; then
+    echo "ℹ️ 未填写 DeepSeek API Key，AI 随机风格功能将不可用，其他工作流不受影响。"
+fi
 echo "之后可以双击「安装.command」或「重启.command」启动服务。"

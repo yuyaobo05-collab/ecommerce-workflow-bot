@@ -68,6 +68,15 @@ def test_import_does_not_require_runtime_secrets(monkeypatch):
     assert "TG_TOKEN" in str(exc_info.value)
 
 
+def test_runtime_config_does_not_require_deepseek_key(monkeypatch):
+    import bot
+
+    monkeypatch.setattr(bot, "TG_TOKEN", "123456:abc")
+    monkeypatch.setattr(bot, "DS_API_KEY", "")
+
+    validate_runtime_config()
+
+
 def test_load_env_file_sets_missing_values(tmp_path, monkeypatch):
     env_file = tmp_path / ".env"
     env_file.write_text(

@@ -393,9 +393,6 @@ def validate_runtime_config():
     if not TG_TOKEN:
         raise RuntimeError("请在 .env、bot_secrets.py 或环境变量 TG_TOKEN 中配置 Telegram Bot Token。")
 
-    if not DS_API_KEY:
-        raise RuntimeError("请在 .env、bot_secrets.py 或环境变量 DS_API_KEY 中配置 DeepSeek API Key。")
-
 
 def migrate_result_archive_dir():
     """将旧的可见生成图存档目录迁移到隐藏目录。"""
@@ -2850,6 +2847,9 @@ async def ds_generate_prompt(user_id: int, user_system_prompt: Optional[str] = N
     优先级：user_system_prompt > deepseek_prompt.txt > 极简兜底。
     携带当天对话历史，避免重复生成相同主题。
     """
+    if not DS_API_KEY:
+        raise RuntimeError("未配置 DeepSeek API Key，AI 随机风格不可用；其他工作流不受影响。")
+
     system_prompt = user_system_prompt or DS_SYSTEM_PROMPT
 
     # history = ds_histories.get(user_id, [])  # 暂时关闭上下文记忆
