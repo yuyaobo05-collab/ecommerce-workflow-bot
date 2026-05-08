@@ -31,6 +31,29 @@ DS_API_KEY=你的 DeepSeek API Key
 
 `.env`、`.用户数据/`、日志、用户语音和旧版 `后台处理/bot_secrets.py` 都会被 Git 忽略。
 
+## Bot 命令菜单
+
+在 BotFather 里使用 `/setcommands` 时，可以直接复制下面这段：
+
+```text
+start - 帮助菜单 / 当前状态
+key - 设置 RunningHub API Key
+aiprompt - AI 生成随机风格提示词
+save - 保存文字预设
+saveimg - 保存图片预设
+savevoice - 保存声音角色
+voice - 选择声音角色
+del - 删除预设
+presetflow - 切换换衣工作流
+expand - 图片扩展开关
+gifsec - 切换动图/首尾时长
+talkprompt - 说话视频提示词
+flprompt - 首尾默认提示词
+comparetext - 设置对比图文案
+compareswitch - 对比图功能开关
+reset - 清空所有设置
+```
+
 ## macOS 后台运行
 
 双击 `Mac/安装.command` 安装并启动后台服务。
