@@ -1,7 +1,8 @@
 $ErrorActionPreference = "Stop"
 
 $ScriptDir = $PSScriptRoot
-$ProjectDir = Split-Path -Parent $ScriptDir
+$WinDir = Split-Path -Parent $ScriptDir
+$ProjectDir = Split-Path -Parent $WinDir
 $TaskName = "ImageEditBot"
 $BackendDirName = [string]([char]0x540E) + [string]([char]0x53F0) + [string]([char]0x5904) + [string]([char]0x7406)
 $UserDataDirName = "." + [string]([char]0x7528) + [string]([char]0x6237) + [string]([char]0x6570) + [string]([char]0x636E)

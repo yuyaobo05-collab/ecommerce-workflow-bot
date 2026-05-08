@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 
-$ProjectDir = Split-Path -Parent $PSScriptRoot
+$ScriptDir = $PSScriptRoot
+$WinDir = Split-Path -Parent $ScriptDir
+$ProjectDir = Split-Path -Parent $WinDir
 $EnvFile = Join-Path $ProjectDir ".env"
 
 Write-Host ""

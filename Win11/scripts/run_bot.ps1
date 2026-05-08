@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 
-$ProjectDir = Split-Path -Parent $PSScriptRoot
+$ScriptDir = $PSScriptRoot
+$WinDir = Split-Path -Parent $ScriptDir
+$ProjectDir = Split-Path -Parent $WinDir
 $UserDataDirName = "." + [string]([char]0x7528) + [string]([char]0x6237) + [string]([char]0x6570) + [string]([char]0x636E)
 $LogDir = Join-Path (Join-Path $ProjectDir $UserDataDirName) "logs"
 $OutLog = Join-Path $LogDir "windows.out.log"
