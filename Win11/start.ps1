@@ -6,5 +6,5 @@ Register-BotTask
 Stop-BotProcess
 Start-BotTask
 
-Write-Host "后台任务已创建并启动。"
-Write-Host "日志目录：$LogDir"
+Write-Host "Background task was created and started."
+Write-Host "Log directory: $LogDir"

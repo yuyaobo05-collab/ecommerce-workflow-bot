@@ -2,4 +2,4 @@
 
 Remove-BotTask
 
-Write-Host "后台任务已卸载。"
+Write-Host "Background task was uninstalled."

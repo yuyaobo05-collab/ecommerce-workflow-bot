@@ -1,4 +1,4 @@
 @echo off
 setlocal
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0重置.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0reset.ps1"
 pause

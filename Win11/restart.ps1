@@ -10,5 +10,5 @@ if (-not (Test-BotTask)) {
 Stop-BotTask
 Start-BotTask
 
-Write-Host "后台任务已重启。"
-Write-Host "日志目录：$LogDir"
+Write-Host "Background task was restarted."
+Write-Host "Log directory: $LogDir"

@@ -3,7 +3,11 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = $PSScriptRoot
 $ProjectDir = Split-Path -Parent $ScriptDir
 $TaskName = "ImageEditBot"
-$UserDir = Join-Path $ProjectDir ".用户数据"
+$BackendDirName = [string]([char]0x540E) + [string]([char]0x53F0) + [string]([char]0x5904) + [string]([char]0x7406)
+$UserDataDirName = "." + [string]([char]0x7528) + [string]([char]0x6237) + [string]([char]0x6570) + [string]([char]0x636E)
+$ResultArchiveDirName = [string]([char]0x751F) + [string]([char]0x6210) + [string]([char]0x56FE) + [string]([char]0x5B58) + [string]([char]0x6863)
+$BackendDir = Join-Path $ProjectDir $BackendDirName
+$UserDir = Join-Path $ProjectDir $UserDataDirName
 $LogDir = Join-Path $UserDir "logs"
 
 function Ensure-LogDir {
@@ -12,10 +16,10 @@ function Ensure-LogDir {
 
 function Ensure-Config {
     $envFile = Join-Path $ProjectDir ".env"
-    $legacySecrets = Join-Path $ProjectDir "后台处理\bot_secrets.py"
+    $legacySecrets = Join-Path $BackendDir "bot_secrets.py"
     if (-not (Test-Path $envFile) -and -not (Test-Path $legacySecrets)) {
-        Write-Host "还没有配置 Bot Token。"
-        Write-Host "请先双击 Win11\配置.bat，按提示填写 Telegram Bot Token。DeepSeek API Key 为可选项。"
+        Write-Host "Bot token is not configured."
+        Write-Host "Run the config .bat file in the Win11 folder first. DeepSeek API key is optional."
         exit 1
     }
 }
@@ -38,12 +42,12 @@ function Invoke-Python {
         return
     }
 
-    throw "未找到 Python。请先安装 Python 3，并勾选 Add Python to PATH。"
+    throw "Python was not found. Install Python 3 and enable Add Python to PATH."
 }
 
 function Install-Dependencies {
-    $requirements = Join-Path $ProjectDir "后台处理\requirements.txt"
-    Write-Host "安装/检查依赖..."
+    $requirements = Join-Path $BackendDir "requirements.txt"
+    Write-Host "Installing/checking dependencies..."
     Invoke-Python -Arguments @("-m", "pip", "install", "-q", "-r", $requirements)
 }
 
@@ -115,8 +119,8 @@ function Clear-BotData {
         ".session_images",
         ".session_videos",
         ".pending_presets",
-        ".生成图存档",
-        "生成图存档",
+        "." + $ResultArchiveDirName,
+        $ResultArchiveDirName,
         "User_presets",
         "User_voices",
         "logs"
