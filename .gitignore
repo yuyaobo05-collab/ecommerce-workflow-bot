@@ -1,4 +1,6 @@
 # Local secrets
+.env
+.env.local
 后台处理/bot_secrets.py
 
 # Runtime user data and logs

@@ -10,6 +10,12 @@ LOG_DIR="$SCRIPT_DIR/.用户数据/logs"
 
 mkdir -p "$HOME/Library/LaunchAgents" "$LOG_DIR"
 
+if [ ! -f "$SCRIPT_DIR/.env" ] && [ ! -f "$SCRIPT_DIR/后台处理/bot_secrets.py" ]; then
+    echo "⚠️ 还没有配置 Bot Token。"
+    echo "请先双击「配置.command」，按提示填写 Telegram Bot Token 和 DeepSeek API Key。"
+    exit 1
+fi
+
 echo "📦 安装/检查依赖..."
 pip3 install -q -r "$SCRIPT_DIR/后台处理/requirements.txt"
 

@@ -28,8 +28,39 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any, Optional
 
+
+PROJECT_DIR = Path(__file__).resolve().parent
+
+
+def _load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].lstrip()
+        if "=" not in line:
+            continue
+        name, value = line.split("=", 1)
+        name = name.strip()
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
+            continue
+        if name in os.environ:
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        else:
+            value = value.split(" #", 1)[0].strip()
+        os.environ[name] = value
+
+
+_load_env_file(PROJECT_DIR / ".env")
+
 # 从 后台处理/ 导入原生 duck 解码器
-sys.path.insert(0, str(Path(__file__).parent / "后台处理"))
+sys.path.insert(0, str(PROJECT_DIR / "后台处理"))
 from duck_decode import decode_duck_image, decode_duck_media
 from runninghub import build_node_info_list
 from workflows.registry import (
@@ -112,7 +143,7 @@ configure_voice_clone_workflow()
 RH_UPLOAD_URL    = "https://www.runninghub.cn/openapi/v2/media/upload/binary"
 RH_QUERY_URL     = "https://www.runninghub.cn/openapi/v2/query"
 
-USER_DIR         = Path(__file__).parent / ".用户数据"
+USER_DIR         = PROJECT_DIR / ".用户数据"
 LOG_DIR          = USER_DIR / "logs"
 BOT_LOG_FILE     = LOG_DIR / "bot.log"
 SESSION_IMAGE_DIR = USER_DIR / ".session_images"
@@ -161,7 +192,7 @@ DEFAULT_FIRST_LAST_VIDEO_PROMPT = (
 
 DS_API_KEY         = (os.getenv("DS_API_KEY") or _DS_API_KEY or "").strip()
 DS_API_URL         = "https://api.deepseek.com/v1/chat/completions"
-DS_PROMPT_FILE     = Path(__file__).parent / "后台处理" / "deepseek_prompt.txt"
+DS_PROMPT_FILE     = PROJECT_DIR / "后台处理" / "deepseek_prompt.txt"
 DS_PROMPT_FALLBACK = "你是一个图像处理提示词专家，请生成一段简洁有创意的中文提示词，不超过50字，直接输出内容。"
 DS_MODEL           = "deepseek-v4-pro"
 DS_MAX_TOKENS      = 1000
@@ -360,10 +391,10 @@ logging.getLogger("httpcore").setLevel(logging.WARNING)
 
 def validate_runtime_config():
     if not TG_TOKEN:
-        raise RuntimeError("请在 bot_secrets.py 或环境变量 TG_TOKEN 中配置 Telegram Bot Token。")
+        raise RuntimeError("请在 .env、bot_secrets.py 或环境变量 TG_TOKEN 中配置 Telegram Bot Token。")
 
     if not DS_API_KEY:
-        raise RuntimeError("请在 bot_secrets.py 或环境变量 DS_API_KEY 中配置 DeepSeek API Key。")
+        raise RuntimeError("请在 .env、bot_secrets.py 或环境变量 DS_API_KEY 中配置 DeepSeek API Key。")
 
 
 def migrate_result_archive_dir():
@@ -2672,7 +2703,7 @@ def get_voice_clone_workflow_config_error() -> Optional[str]:
         return "未找到 voice_clone 工作流配置"
     if not (spec.endpoint or "").startswith("http"):
         return (
-            "还没配置声音克隆工作流。请在环境变量或 bot_secrets.py 里设置 RH_VOICE_CLONE_ENDPOINT，"
+            "还没配置声音克隆工作流。请在 .env、环境变量或 bot_secrets.py 里设置 RH_VOICE_CLONE_ENDPOINT，"
             "以及必要时设置 RH_VOICE_SAMPLE_NODE_ID/RH_VOICE_SAMPLE_FIELD/"
             "RH_VOICE_TEXT_NODE_ID/RH_VOICE_TEXT_FIELD。"
         )
